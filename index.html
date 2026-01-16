@@ -60,8 +60,11 @@
   <script type="module">
     import { loadContent } from './wms/vite-wms.js';
 
-    loadContent("header", "./wms/header.html", true)
+    // ? should we await ?
+    loadContent("header.head", "./wms/header.html", true)
     loadContent("footer", "./wms/footer.html")
+
+    // BUG: header is being loaded twice (re: debug log)
 
     // WIP (pseudo-code)
     // init()
@@ -71,34 +74,46 @@
     const routes = await routesResponse.json();
     console.debug(routes);
 
-    // WIP - hard-coding index page
-    document.title = routes["index"]["title"]
-    document.querySelector('meta[name="description"]')?.setAttribute("content", routes["index"]["description"]);
-    // routes["index"]["blocks"]
-
     const blocksContainer = document.querySelector("#wms-blocks")
 
-    for (const p in routes) {
-      if (!Object.hasOwn(routes, p)) continue;
+    // // DEBUG ONLY CURRENTLY
+    // for (const p in routes) {
+    //   if (!Object.hasOwn(routes, p)) continue;
 
-      // console.log("page name:", p);
+    //   // console.log("page name:", p);
 
-      const page = routes[p];
-      console.log("page:", page);
+    //   const page = routes[p];
+    //   console.log("page:", page);
 
+    // }
+
+    // WIP
+    // DEV - page hard-coded to index
+
+    const currentPage = "index"
+    const page = routes[currentPage]
+    console.error("current page:", page)
+
+    // Log all properties
+    for (const property in page) {
+      if (!Object.hasOwn(page, property)) continue;
+      console.warn(`${property}: ${page[property]}`);
     }
 
-    // DEV: hard-coded index page
-    for (const block of routes["index"]["blocks"]) {
-      console.debug("index page block:", block)
-      const vDataAttr = block.type == "content" ? "data-v-d084fd22" : "meta" ? "data-v-0dccd748" : "000"
-      console.log(vDataAttr);
+    document.title = page["title"]
+    document.querySelector('meta[name="description"]')?.setAttribute("content", page["description"]);
+
+    // * Blocks Rendering
+    for (const block of page["blocks"]) {
+      // console.debug("current page block:", block)
+      const vDataAttr = block.type == "content" ? "data-v-d084fd22" 
+                                     : "meta" ? "data-v-0dccd748" 
+                                     : "000" // DEBUG
 
       const div = document.createElement("div")
 
-
       const filepath = `./pages/${block["src"]}.html`
-      console.debug("filepath:", filepath);
+      // console.debug("filepath:", filepath);
 
       // Load inner HTML from external file given provided filename
       try {
@@ -113,6 +128,8 @@
         }
 
         console.debug("htmlContent:", htmlContent);
+
+        // TODO: Handle scripts
 
         div.innerHTML = htmlContent;
 

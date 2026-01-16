@@ -47,6 +47,7 @@ export async function loadContent(target, url, replace = false) {
         newScript.onload = resolve;
         newScript.onerror = reject;
 
+        // TODO: Determine where the <script> element should be placed
         // Inline scripts don't trigger 'onload', so resolve immediately
         document.head.appendChild(newScript);
         if (!newScript.src) resolve();
