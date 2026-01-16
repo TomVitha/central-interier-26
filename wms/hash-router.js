@@ -1,16 +1,11 @@
 // HASH ROUTER
 import routes from "/wms/routes.json" with { type: "json" };
 
-const pageTitlePrefix = ''
-const pageTitleSuffix = ''
+const titlePrefix = ''
+const titleSuffix = ''
 
 // Function that watches the url and calls the urlLocationHandler
-const hashRouterHandler = async (hashChangeEvent) => {
-  // Debug logs
-  // console.debug("Event: ", hashChangeEvent);
-  // console.debug("new url: ", hashChangeEvent.newURL);
-  // console.debug("old url: ", hashChangeEvent.oldURL);
-
+async function hashRouterHandler(hashChangeEvent) {
   // Avoids redirect if hash is empty
   if (!window.location.hash) {
     window.history.pushState(null, null, hashChangeEvent.oldURL);
@@ -18,24 +13,24 @@ const hashRouterHandler = async (hashChangeEvent) => {
     return
   }
 
-  let location = window.location.hash.replace("#page/", "")									// get the fragment (without the hash), corresponding to url path
-  if (location.length == 0) {																// if the path length is 0, set it to 404 (or primary page route)
+  let path = window.location.hash.replace("#page/", "")
+  if (path.length == 0) {
     console.warn("Router error: No location provided.")
-    location = "404";
+    path = "404";
   }
 
-  navigate(location);    // "navigate" to route (load the template html)
+  navigate(path);
 };
 
 async function navigate(path) {
 
   // Check route/path/page exists
   if (!routes[path]) {
-    console.error(`Navigator Error: Location "${path}" doesn't exist. Redirecting to 404.`)
+    console.error(`Navigator Error: Location "${path}" doesn't exist, redirecting to 404.`)
     path = "404"
   }
 
-  // let route = routes[location];
+  // const page = routes[location];
   updateContent(path)
 
   // Jump to the top of the page
@@ -47,10 +42,10 @@ async function navigate(path) {
 }
 
 
-async function updateContent(location) {
+async function updateContent(path) {
 
   const blocksContainer = document.querySelector("#wms-blocks")
-  const page = routes[location]
+  const page = routes[path]
 
   // DEV Log all properties
   // for (const property in page) {
@@ -58,52 +53,54 @@ async function updateContent(location) {
   //   console.warn(`${property}: ${page[property]}`);
   // }
 
-  document.title = `${pageTitlePrefix}${page["title"]}${pageTitleSuffix}`
+  document.title = `${titlePrefix}${page["title"]}${titleSuffix}`
   document.querySelector('meta[name="description"]')?.setAttribute("content", page["description"]);
 
-  const blocks = await createBlocksDivs(location)
+  const blocks = await createBlocksDivs(path)
   blocksContainer.replaceChildren(...blocks)
 }
 
-// * Blocks Rendering
-async function createBlocksDivs(route) {
-  
+
+async function createBlocksDivs(path) {
+
   let blocksDivs = []
-  for (const block of routes[route]["blocks"]) {
+  for (const block of routes[path]["blocks"]) {
 
     const div = document.createElement("div")
     const filepath = `./pages/${block["src"]}.html`
+    let html
 
     // Load inner HTML from external file given provided filename
     try {
       const response = await fetch(filepath);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const html = await response.text();
-
-      // If the provided path doesn't lead to an existing file, fetch returns the content of the current file
-      // Check if the server returned the main index.html instead of the requested partial
-      if (html.includes("<!DOCTYPE html>")) {
-        throw new Error(`File not found (Server returned full page): ${filepath}`);
-      }
-
-      // TODO: Handle scripts
-
-      // HTML Content
-      div.innerHTML = html;
-
-      // Attributes
-      const vDataAttr = block.type == "content" ? "data-v-d084fd22"
-        : "meta" ? "data-v-0dccd748"
-          : "000" // DEBUG
-      div.setAttribute(vDataAttr, "")
-      div.setAttribute("class", block["class"] || "")
-      div.setAttribute("id", block["id"] || "")
-
-      blocksDivs.push(div)
+      html = await response.text();
     }
     catch (error) {
       console.error("Failed to load content:", error);
     }
+
+    // If the provided path doesn't lead to an existing file, fetch returns the content of the current file
+    // Check if the server returned the main index.html instead of the requested partial
+    if (html.includes("<!DOCTYPE html>")) {
+      throw new Error(`File not found (Server returned full page): ${filepath}`);
+    }
+
+    // TODO: Handle scripts
+
+    // HTML Content
+    div.innerHTML = html;
+
+    // Attributes
+    const vDataAttr = block.type == "content" ? "data-v-d084fd22"
+      : "meta" ? "data-v-0dccd748"
+        : ""
+    div.setAttribute(vDataAttr, "")
+    div.setAttribute("class", block["class"] || "")
+    div.setAttribute("id", block["id"] || "")
+
+    blocksDivs.push(div)
+
   }
   return blocksDivs
 }
@@ -111,10 +108,7 @@ async function createBlocksDivs(route) {
 
 export function initRouter() {
   window.addEventListener("hashchange", hashRouterHandler);
-  if (window.location.hash.startsWith('#page/')) {
-    const newPath = window.location.hash.replace("#page/", "")
-    navigate(newPath);            // first-time load navigation - from existing hash, or default to index
-  } else {
-    navigate("index")
-  }
+  // Initial page load
+  const path = window.location.hash.startsWith('#page/') ? window.location.hash.replace("#page/", "") : "index"
+  navigate(path)
 }
