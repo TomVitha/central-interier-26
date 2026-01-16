@@ -60,91 +60,15 @@
   <script type="module">
     import { loadContent } from './wms/vite-wms.js';
 
+    import { hashChangeListener } from './wms/hash-router.js'
+
+    hashChangeListener()
+
     // ? should we await ?
     loadContent("header.head", "./wms/header.html", true)
     loadContent("footer", "./wms/footer.html")
 
-    // BUG: header is being loaded twice (re: debug log)
 
-    // WIP (pseudo-code)
-    // init()
-
-    const routesResponse = await fetch("./wms/routes.json");
-    console.debug(routesResponse);
-    const routes = await routesResponse.json();
-    console.debug(routes);
-
-    const blocksContainer = document.querySelector("#wms-blocks")
-
-    // // DEBUG ONLY CURRENTLY
-    // for (const p in routes) {
-    //   if (!Object.hasOwn(routes, p)) continue;
-
-    //   // console.log("page name:", p);
-
-    //   const page = routes[p];
-    //   console.log("page:", page);
-
-    // }
-
-    // WIP
-    // DEV - page hard-coded to index
-
-    const currentPage = "index"
-    const page = routes[currentPage]
-    console.error("current page:", page)
-
-    // Log all properties
-    for (const property in page) {
-      if (!Object.hasOwn(page, property)) continue;
-      console.warn(`${property}: ${page[property]}`);
-    }
-
-    document.title = page["title"]
-    document.querySelector('meta[name="description"]')?.setAttribute("content", page["description"]);
-
-    // * Blocks Rendering
-    for (const block of page["blocks"]) {
-      // console.debug("current page block:", block)
-      const vDataAttr = block.type == "content" ? "data-v-d084fd22" 
-                                     : "meta" ? "data-v-0dccd748" 
-                                     : "000" // DEBUG
-
-      const div = document.createElement("div")
-
-      const filepath = `./pages/${block["src"]}.html`
-      // console.debug("filepath:", filepath);
-
-      // Load inner HTML from external file given provided filename
-      try {
-        const response = await fetch(filepath);
-        if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-        const htmlContent = await response.text();
-
-        // HACK possibly - if the provided path doesn't lead to an existing file, fetch returns the content of the current file
-        // Check if the server returned the main index.html instead of the requested partial
-        if (htmlContent.includes("<!DOCTYPE html>")) {
-          throw new Error(`File not found (Server returned full page): ${filepath}`);
-        }
-
-        console.debug("htmlContent:", htmlContent);
-
-        // TODO: Handle scripts
-
-        div.innerHTML = htmlContent;
-
-        div.setAttribute(vDataAttr, "")
-        div.setAttribute("class", block["class"] || "")
-        div.setAttribute("id", block["id"] || "")
-
-        blocksContainer.append(div)
-      }
-      catch (error) {
-        console.error("Failed to load content:", error);
-      }
-
-
-    }
 
   </script>
 </body>

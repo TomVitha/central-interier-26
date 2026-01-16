@@ -5,17 +5,13 @@
     "blocks": [
       {
         "type": "meta",
-        "src": "mmmetaaa"
+        "src": "metaaa"
       },
       {
         "type": "content",
         "class": "klasa",
         "id": "ajdy",
         "src": "kontent"
-      },
-      {
-        "type": "content",
-        "src": "skriptzzz"
       }
     ]
   },
@@ -25,11 +21,11 @@
     "blocks": [
       {
         "type": "meta",
-        "src": "mmmetaaa"
+        "src": "metaaa"
       },
       {
         "type": "content",
-        "src": "kontenttt"
+        "src": "about-us-content"
       }
     ]
   }
