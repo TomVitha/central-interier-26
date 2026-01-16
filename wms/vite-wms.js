@@ -5,13 +5,16 @@
  * @param {boolean} replace - Replace element (true) or insert inside (false).
  */
 export async function loadContent(target, url, replace = false) {
-  console.warn("loadContent is working...")
+  console.debug(`Loading content for '${target}'`)
 
-  const targetElement = typeof target === 'string' 
-    ? document.querySelector(target) 
+  const targetElement = typeof target === 'string'
+    ? document.querySelector(target)
     : target;
-    
-  if (!targetElement) return;
+
+  if (!targetElement) { 
+    console.error(`Target element not found: '${target}'`)
+    return
+  }
 
   try {
     const response = await fetch(url);
@@ -58,7 +61,7 @@ export async function loadContent(target, url, replace = false) {
       }
     }
     */
-   
+
     // Replace the script loop with this if order matters:
     for (const oldScript of scripts) {
       await new Promise((resolve, reject) => {
