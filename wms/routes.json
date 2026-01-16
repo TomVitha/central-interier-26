@@ -1,0 +1,36 @@
+{
+  "index": {
+    "title": "Home Page",
+    "description": "Welcome to the Home Page",
+    "blocks": [
+      {
+        "type": "meta",
+        "src": "mmmetaaa"
+      },
+      {
+        "type": "content",
+        "class": "klasa",
+        "id": "ajdy",
+        "src": "kontent"
+      },
+      {
+        "type": "content",
+        "src": "skriptzzz"
+      }
+    ]
+  },
+  "about-us": {
+    "title": "About Us",
+    "description": "Learn more about us",
+    "blocks": [
+      {
+        "type": "meta",
+        "src": "mmmetaaa"
+      },
+      {
+        "type": "content",
+        "src": "kontenttt"
+      }
+    ]
+  }
+}

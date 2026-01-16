@@ -37,31 +37,6 @@ export async function loadContent(target, url, replace = false) {
     // 3. Execute scripts with attribute support
     const scripts = Array.from(tempDiv.querySelectorAll('script'));
 
-    /*
-    for (const oldScript of scripts) {
-      const newScript = document.createElement('script');
-
-      // Copy all attributes (src, type, async, defer, etc.)
-      Array.from(oldScript.attributes).forEach(attr => {
-        newScript.setAttribute(attr.name, attr.value);
-      });
-
-      // Handle inline script content
-      if (oldScript.innerHTML) {
-        newScript.textContent = oldScript.innerHTML;
-      }
-
-      // Append to document to trigger loading/execution
-      document.head.appendChild(newScript);
-
-      // Clean up: remove the script tag if it's not a module/external source
-      // Note: Modules and external scripts usually stay in the head.
-      if (!newScript.src && newScript.type !== 'module') {
-        newScript.remove();
-      }
-    }
-    */
-
     // Replace the script loop with this if order matters:
     for (const oldScript of scripts) {
       await new Promise((resolve, reject) => {
