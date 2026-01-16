@@ -1,4 +1,13 @@
 {
+  "404": {
+    "title": "404",
+    "description": "404 - Stránka neexistuje",
+    "blocks": [
+      {
+        "src": "404"
+      }
+    ]
+  },
   "index": {
     "title": "Home Page",
     "description": "Welcome to the Home Page",

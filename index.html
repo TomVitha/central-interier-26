@@ -59,16 +59,13 @@
   <!-- TODO: Font Awesome Styles -->
   <script type="module">
     import { loadContent } from './wms/vite-wms.js';
+    import { initRouter } from './wms/hash-router.js'
 
-    import { hashChangeListener } from './wms/hash-router.js'
-
-    hashChangeListener()
+    initRouter()
 
     // ? should we await ?
     loadContent("header.head", "./wms/header.html", true)
     loadContent("footer", "./wms/footer.html")
-
-
 
   </script>
 </body>

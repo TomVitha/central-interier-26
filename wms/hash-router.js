@@ -1,11 +1,8 @@
 // HASH ROUTER
 import routes from "/wms/routes.json" with { type: "json" };
 
-
-
 const pageTitlePrefix = ''
 const pageTitleSuffix = ''
-
 
 // Function that watches the url and calls the urlLocationHandler
 const hashRouterHandler = async (hashChangeEvent) => {
@@ -30,30 +27,16 @@ const hashRouterHandler = async (hashChangeEvent) => {
   navigate(location);    // "navigate" to route (load the template html)
 };
 
-async function navigate(location) {
-  // Validation
-  if (!location) {
-    console.error("Navigator Error: No location name provided.")
-    return
-  }
+async function navigate(path) {
 
   // Check route/path/page exists
-  let route = routes[location];
-  if (!route) {
-    console.error(`Navigator Error: Location "${location}" doesn't exist.`)
-    console.log('Redirecting to 404...')
-    route = routes["404"]
+  if (!routes[path]) {
+    console.error(`Navigator Error: Location "${path}" doesn't exist. Redirecting to 404.`)
+    path = "404"
   }
 
-
-  // * CONTENT RENDERING * //
-  // const pageHTML = await fetch(route.template).then((response) => response.text());						// get the html from the template
-  // document.querySelector("#dev-cms-content").innerHTML = pageHTML;											// set the content of the content div to the html
-  // document.title = `${pageTitlePrefix}${route.title}${pageTitleSuffix}`;							// set the title of the document to the title of the route
-  // document.querySelector('meta[name="description"]')?.setAttribute("content", route.description);		// set the description of the document to the description of the route
-
-  updateContent(location)
-
+  // let route = routes[location];
+  updateContent(path)
 
   // Jump to the top of the page
   window.scrollTo({
@@ -61,86 +44,77 @@ async function navigate(location) {
     left: 0,
     behavior: "instant"
   })
-  // updateNavbarActiveLink(location)					                                                // update the active link in the navbar
 }
 
 
-async function updateContent(pageName) {
+async function updateContent(location) {
 
   const blocksContainer = document.querySelector("#wms-blocks")
-
-  console.warn("page name:", pageName)
-  const page = routes[pageName]
-  console.warn("current page:", page)
+  const page = routes[location]
 
   // DEV Log all properties
-  for (const property in page) {
-    if (!Object.hasOwn(page, property)) continue;
-    console.warn(`${property}: ${page[property]}`);
-  }
+  // for (const property in page) {
+  //   if (!Object.hasOwn(page, property)) continue;
+  //   console.warn(`${property}: ${page[property]}`);
+  // }
 
-  // FIXME
-  // document.title = page["title"]
-  // document.querySelector('meta[name="description"]')?.setAttribute("content", page["description"]);
+  document.title = `${pageTitlePrefix}${page["title"]}${pageTitleSuffix}`
+  document.querySelector('meta[name="description"]')?.setAttribute("content", page["description"]);
 
+  const blocks = await createBlocksDivs(location)
+  blocksContainer.replaceChildren(...blocks)
+}
+
+// * Blocks Rendering
+async function createBlocksDivs(route) {
+  
   let blocksDivs = []
-
-  // * Blocks Rendering
-  for (const block of page["blocks"]) {
-    // console.debug("current page block:", block)
-    const vDataAttr = block.type == "content" ? "data-v-d084fd22"
-      : "meta" ? "data-v-0dccd748"
-        : "000" // DEBUG
+  for (const block of routes[route]["blocks"]) {
 
     const div = document.createElement("div")
-
     const filepath = `./pages/${block["src"]}.html`
-    // console.debug("filepath:", filepath);
-
 
     // Load inner HTML from external file given provided filename
     try {
       const response = await fetch(filepath);
       if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      const htmlContent = await response.text();
+      const html = await response.text();
 
-      // HACK possibly - if the provided path doesn't lead to an existing file, fetch returns the content of the current file
+      // If the provided path doesn't lead to an existing file, fetch returns the content of the current file
       // Check if the server returned the main index.html instead of the requested partial
-      if (htmlContent.includes("<!DOCTYPE html>")) {
+      if (html.includes("<!DOCTYPE html>")) {
         throw new Error(`File not found (Server returned full page): ${filepath}`);
       }
 
-      console.debug("htmlContent:", htmlContent);
-
       // TODO: Handle scripts
 
-      div.innerHTML = htmlContent;
+      // HTML Content
+      div.innerHTML = html;
 
+      // Attributes
+      const vDataAttr = block.type == "content" ? "data-v-d084fd22"
+        : "meta" ? "data-v-0dccd748"
+          : "000" // DEBUG
       div.setAttribute(vDataAttr, "")
       div.setAttribute("class", block["class"] || "")
       div.setAttribute("id", block["id"] || "")
 
-      // blocksContainer.append(div)
-
-      // add div to blocks
       blocksDivs.push(div)
     }
     catch (error) {
       console.error("Failed to load content:", error);
     }
   }
-
-  blocksContainer.replaceChildren(...blocksDivs)
-
+  return blocksDivs
 }
 
 
-export function hashChangeListener() {
-  window.addEventListener("hashchange", hashRouterHandler);                   // create a function that watches the hash and calls the urlLocationHandler
+export function initRouter() {
+  window.addEventListener("hashchange", hashRouterHandler);
   if (window.location.hash.startsWith('#page/')) {
     const newPath = window.location.hash.replace("#page/", "")
     navigate(newPath);            // first-time load navigation - from existing hash, or default to index
   } else {
-    navigate("about-us")
+    navigate("index")
   }
 }
