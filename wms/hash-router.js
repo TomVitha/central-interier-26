@@ -44,8 +44,8 @@ async function navigate(path) {
 
 async function updateContent(path) {
 
-  const blocksContainer = document.querySelector("#wms-blocks")
   const page = routes[path]
+  const blocksContainer = document.querySelector("#wms-blocks")
 
   // DEV Log all properties
   // for (const property in page) {
@@ -56,12 +56,12 @@ async function updateContent(path) {
   document.title = `${titlePrefix}${page["title"]}${titleSuffix}`
   document.querySelector('meta[name="description"]')?.setAttribute("content", page["description"]);
 
-  const blocks = await createBlocksDivs(path)
-  blocksContainer.replaceChildren(...blocks)
+  const blocks = await createBlocks(path)
+  blocksContainer.replaceChildren(document.createRange().createContextualFragment(blocks.join("\n")))
 }
 
 
-async function createBlocksDivs(path) {
+async function createBlocks(path) {
 
   let blocksDivs = []
   for (const block of routes[path]["blocks"]) {
@@ -86,8 +86,6 @@ async function createBlocksDivs(path) {
       throw new Error(`File not found (Server returned full page): ${filepath}`);
     }
 
-    // TODO: Handle scripts
-
     // HTML Content
     div.innerHTML = html;
 
@@ -98,9 +96,8 @@ async function createBlocksDivs(path) {
     div.setAttribute(vDataAttr, "")
     div.setAttribute("class", block["class"] || "")
     div.setAttribute("id", block["id"] || "")
-
-    blocksDivs.push(div)
-
+    
+    blocksDivs.push(div.outerHTML)
   }
   return blocksDivs
 }
