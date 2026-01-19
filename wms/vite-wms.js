@@ -5,7 +5,7 @@
  * @param {boolean} replace - Replace element (true) or insert inside (false).
  */
 export async function loadContent(target, url, replace = false) {
-  console.debug(`Loading content for '${target}'`)
+  // console.debug(`Loading content for '${target}'`)
 
   const targetElement = typeof target === 'string'
     ? document.querySelector(target)

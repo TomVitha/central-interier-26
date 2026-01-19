@@ -6,32 +6,43 @@ const titleSuffix = ''
 
 // Function that watches the url and calls the urlLocationHandler
 async function hashRouterHandler(hashChangeEvent) {
-  // Avoids redirect if hash is empty
-  if (!window.location.hash) {
-    window.history.pushState(null, null, hashChangeEvent.oldURL);
-    console.warn('Router alert: Redirect avoided (empty hash).');
+
+  // console.debug("hashRouterHandler hashChangeEvent", hashChangeEvent);
+
+  const oldURLRoute = routeFromURL(new URL(hashChangeEvent.oldURL))
+  const newURLRoute = routeFromURL(new URL(hashChangeEvent.newURL))
+  // console.debug("oldURLRoute", oldURLRoute)
+  // console.debug("newURLRoute", newURLRoute)
+
+  // * Anchor link click handling
+  if (newURLRoute.type == "anchor") {
+    console.debug('Router alert: Anchor link, redirect avoided.');
+    const newPath = oldURLRoute.path ? `/#page/${oldURLRoute.path}#${newURLRoute.hash}` : `/#page#${newURLRoute.hash}`
+    window.history.replaceState(null, null, newPath)
     return
   }
 
-  let path = window.location.hash.replace("#page/", "")
-  if (path.length == 0) {
-    console.warn("Router error: No location provided.")
-    path = "404";
-  }
+  const route = routeFromURL()
+  console.debug("Hash change - route:", route)
+  const newPath = route.path
 
-  navigate(path);
+  navigate(newPath);
+  // ? maybe
+  // return route
 };
 
-async function navigate(path) {
+// * Expects a direct path (no more parsing)
+// * Only checks if path exists
+export async function navigate(p) {
 
-  // Check route/path/page exists
-  if (!routes[path]) {
-    console.error(`Navigator Error: Location "${path}" doesn't exist, redirecting to 404.`)
-    path = "404"
+  // Check page exists
+  if (!routes[p]) {
+    console.error(`Navigator Error: Location "${p}" doesn't exist, redirecting to 404.`)
+    p = "404"
   }
 
   // const page = routes[location];
-  updateContent(path)
+  updatePageContent(p)
 
   // Jump to the top of the page
   window.scrollTo({
@@ -42,32 +53,48 @@ async function navigate(path) {
 }
 
 
-async function updateContent(path) {
+async function updatePageContent(p) {
 
-  const page = routes[path]
+  const page = routes[p]
   const blocksContainer = document.querySelector("#wms-blocks")
 
   // DEV Log all properties
   // for (const property in page) {
   //   if (!Object.hasOwn(page, property)) continue;
-  //   console.warn(`${property}: ${page[property]}`);
+  //   console.debug(`${property}: ${page[property]}`);
   // }
 
-  document.title = `${titlePrefix}${page["title"]}${titleSuffix}`
-  document.querySelector('meta[name="description"]')?.setAttribute("content", page["description"]);
+  // Meta
+  document.title = `${titlePrefix}${page.title}${titleSuffix}`
+  document.querySelector('meta[name="description"]')?.setAttribute("content", page.description);
 
-  const blocks = await createBlocks(path)
-  blocksContainer.replaceChildren(document.createRange().createContextualFragment(blocks.join("\n")))
+  // Content
+  const blocks = await createBlocks(p)
+  blocksContainer.replaceChildren(document.createRange().createContextualFragment(blocks.join("\n")))   // Fragment allows executing scripts inside loaded HTML (dangerous for prod, fine for local dev)
+
+  // Active link class
+  document.querySelectorAll('a[href]').forEach(link => {
+    const href = link.getAttribute('href')
+      .replace('/#page/', '')
+      .replace('#page/', '')
+      .replace('/page/', '');
+
+    if (href === p) {
+      link.classList.add('active');
+    } else {
+      link.classList.remove('active');
+    }
+  });
 }
 
 
-async function createBlocks(path) {
+async function createBlocks(p) {
 
   let blocksDivs = []
-  for (const block of routes[path]["blocks"]) {
+  for (const block of routes[p].blocks) {
 
     const div = document.createElement("div")
-    const filepath = `./pages/${block["src"]}.html`
+    const filepath = `./pages/${block.src}.html`
     let html
 
     // Load inner HTML from external file given provided filename
@@ -86,26 +113,72 @@ async function createBlocks(path) {
       throw new Error(`File not found (Server returned full page): ${filepath}`);
     }
 
-    // HTML Content
+    // Inner content
     div.innerHTML = html;
 
+    // If block type is not set we'll assume it's "content"
+    if (!block.type) block.type = "content"
+
     // Attributes
-    const vDataAttr = block.type == "content" ? "data-v-d084fd22"
-      : "meta" ? "data-v-0dccd748"
-        : ""
+    const vDataAttr =
+      block.type == "content" ? "data-v-d084fd22"
+        : "meta" ? "data-v-0dccd748"
+          : ""
     div.setAttribute(vDataAttr, "")
-    div.setAttribute("class", block["class"] || "")
-    div.setAttribute("id", block["id"] || "")
-    
+    div.setAttribute("class", block.class || "")
+    div.setAttribute("id", block.id || "")
+
     blocksDivs.push(div.outerHTML)
   }
   return blocksDivs
 }
 
+/**
+ * Extracts route parameters
+ * 
+ * @returns Route parameters
+ */
+function routeFromURL(urlString = window.location.href) {
 
-export function initRouter() {
-  window.addEventListener("hashchange", hashRouterHandler);
-  // Initial page load
-  const path = window.location.hash.startsWith('#page/') ? window.location.hash.replace("#page/", "") : "index"
-  navigate(path)
+  const url = new URL(urlString);
+
+  let type =
+    url.hash.startsWith('#page/') ? "redirect"
+      : url.hash.startsWith('#') ? "anchor"
+        : null
+
+  const UrlHashSegments = url.hash.split("#")
+  UrlHashSegments.shift()  // remove unnecessary first empty item
+  // console.debug("UrlHashSegments", UrlHashSegments)
+
+  const path =
+    type == "redirect" ? UrlHashSegments[0].replace("page/", "")
+      : null
+
+  // const hash = type == "redirect" && UrlHashSegments.length > 1 ? UrlHashSegments.at(-1) : null
+
+  const hash =
+    type == "redirect" && UrlHashSegments.length > 1 ? UrlHashSegments.at(-1)
+      : type == "anchor" ? UrlHashSegments.at(-1)
+        : null
+
+
+  // if type anchor - last array item (always)
+  // if type spa - last item if more than 1 item
+
+  const route = { path, hash, type }
+  // console.debug("route object", route)
+  return route
 }
+
+export function initRouter(initialPath = "index") {
+
+  // Handle hash change (which equates to a redirect in an SPA)
+  window.addEventListener("hashchange", hashRouterHandler);
+
+  // First load
+  navigate(routeFromURL().path || initialPath)
+  // debug
+  // console.debug("= FIRST PAGE LOAD =")
+}
+
