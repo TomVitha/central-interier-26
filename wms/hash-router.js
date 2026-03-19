@@ -1,8 +1,11 @@
 // HASH ROUTER
 import routes from "./routes.json" with { type: "json" };
 
-const titlePrefix = ''
-const titleSuffix = ''
+const TITLE_PREFIX = ''
+const TITLE_SUFFIX = ''
+
+const IS_ACTIVE_LINK_CLASS = true;
+const ACTIVE_LINK_CLASS = 'router-active'
 
 // Function that watches the url and calls the urlLocationHandler
 async function hashRouterHandler(hashChangeEvent) {
@@ -65,7 +68,7 @@ async function updatePageContent(p) {
   // }
 
   // Meta
-  document.title = `${titlePrefix}${page.title}${titleSuffix}`
+  document.title = `${TITLE_PREFIX}${page.title}${TITLE_SUFFIX}`
   document.querySelector('meta[name="description"]')?.setAttribute("content", page.description);
 
   // Content
@@ -73,18 +76,20 @@ async function updatePageContent(p) {
   blocksContainer.replaceChildren(document.createRange().createContextualFragment(blocks.join("\n")))   // Fragment allows executing scripts inside loaded HTML (dangerous for prod, fine for local dev)
 
   // Active link class
-  document.querySelectorAll('a[href]').forEach(link => {
-    const href = link.getAttribute('href')
-      .replace('/#page/', '')
-      .replace('#page/', '')
-      .replace('/page/', '');
+  if (IS_ACTIVE_LINK_CLASS) {
+    document.querySelectorAll('a[href]').forEach(link => {
+      const href = link.getAttribute('href')
+        .replace('/#page/', '')
+        .replace('#page/', '')
+        .replace('/page/', '');
 
-    if (href === p) {
-      link.classList.add('active');
-    } else {
-      link.classList.remove('active');
-    }
-  });
+      if (href === p) {
+        link.classList.add(ACTIVE_LINK_CLASS);
+      } else {
+        link.classList.remove(ACTIVE_LINK_CLASS);
+      }
+    });
+  }
 }
 
 

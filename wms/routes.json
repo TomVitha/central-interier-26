@@ -18,9 +18,13 @@
       },
       {
         "type": "content",
+        "src": "nav"
+      },
+      {
+        "type": "content",
+        "src": "kontent",
         "class": "klasa",
-        "id": "ajdy",
-        "src": "kontent"
+        "id": "ajdy"
       }
     ]
   },
@@ -34,7 +38,11 @@
       },
       {
         "type": "content",
-        "src": "about-us-content"
+        "src": "nav"
+      },
+      {
+        "type": "content",
+        "src": "aboot"
       }
     ]
   }
