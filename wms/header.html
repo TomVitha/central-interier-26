@@ -234,8 +234,29 @@
       </div>
     </div>
   </header>
-  <!-- TEMP -->
-	<!-- <script>
-    console.warn("HEEEEEEEAAAAAAADER")
-  </script> -->
+  <script>
+    document.querySelector(".nav-brand").addEventListener("click", e => {
+      e.currentTarget.classList.toggle("open")
+    })
+
+    // Toggling menus
+    document.addEventListener("click", (e) => {
+      const menuButtons = document.querySelectorAll('.mm-level-0 > :is(.mm-product, .mm-main-item)')
+      menuButtons.forEach(menuButton => {
+        const menu = menuButton.querySelector("ul.mm-level-1")
+        // Clicked on the menu button (but not inside its submenu)
+        if (menuButton.contains(e.target) && !(menu && menu.contains(e.target))) {
+          // Toggle visibility
+          menuButton.classList.toggle("menu-top-visible")
+          menu.classList.toggle("active")
+        }
+        // Clicked elsewhere
+        else if (!menuButton.contains(e.target)) {
+          // Hide the menu
+          menuButton.classList.remove("menu-top-visible")
+          menu.classList.remove("active")
+        }
+      })
+    })
+  </script>
 </header>
