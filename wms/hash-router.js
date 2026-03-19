@@ -94,7 +94,7 @@ async function createBlocks(p) {
   for (const block of routes[p].blocks) {
 
     const div = document.createElement("div")
-    const filepath = `./pages/${block.src}.html`
+    const filepath = `./blocks/${block.src}.html`
     let html
 
     // Load inner HTML from external file given provided filename
