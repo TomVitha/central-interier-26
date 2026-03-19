@@ -122,7 +122,7 @@ async function createBlocks(p) {
     // Attributes
     const vDataAttr =
       block.type == "content" ? "data-v-d084fd22"
-        : "meta" ? "data-v-0dccd748"
+        : block.type == "meta" ? "data-v-0dccd748"
           : ""
     div.setAttribute(vDataAttr, "")
     div.setAttribute("class", block.class || "")
