@@ -1,0 +1,154 @@
+.btn {
+  --btn-padding-y: 1em;
+  --btn-padding-x: 1.5em;
+  /* ? je var zapotřebí ? */
+  /* --btn-font-size: 0.8125rem; */
+  /* ? je var zapotřebí ? */
+  --btn-theme-color: white;
+  --btn-color: var(--btn-contrast-color);
+  --btn-bg: var(--btn-theme-color);
+  --btn-border-width: 1px;
+  --btn-border-color: transparent;
+  --btn-border-radius: 6.4px;
+  --btn-hover-color: var(--btn-color);
+  --btn-hover-bg: var(--btn-bg);
+
+  display: inline-block;
+  padding: var(--btn-padding-y) var(--btn-padding-x);
+  font-family: inherit;
+  font-size: var(--controls-fs, var(--controls-fs-md));
+  font-weight: 300;
+  line-height: 1.25em;
+  /* line-height: 1; */
+  color: var(--btn-color);
+  text-align: center;
+  vertical-align: middle;
+  cursor: pointer;
+  -webkit-user-select: none;
+  user-select: none;
+  border: var(--btn-border-width) solid var(--btn-border-color);
+  border-radius: var(--btn-border-radius);
+  background-color: var(--btn-bg);
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+
+  /* ADDED */
+  letter-spacing: 0.125em;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  position: relative;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn {
+    transition: none;
+  }
+}
+
+.btn:hover {
+  color: var(--btn-hover-color);
+  text-decoration: none;
+  background-color: var(--btn-hover-bg);
+}
+
+
+/* DEFAULT */
+
+.btn-link {
+  /* color: rgb(6.711627907, 124.1651162791, 233.788372093); */
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+
+  &:hover {
+    /* color: rgb(4.8, 88.8, 167.2); */
+    border-color: transparent;
+  }
+
+  .icon {
+    color: inherit;
+  }
+}
+
+.btn-primary {
+  --btn-theme-color: var(--primary-color);
+  --btn-contrast-color: var(--primary-contrast-color);
+}
+
+.btn-dynamic-primary {
+  --btn-theme-color: white;
+  --btn-contrast-color: black;
+
+  &:is(:hover, :focus-visible) {
+    --btn-theme-color: var(--primary-color);
+    --btn-contrast-color: var(--primary-contrast-color);
+  }
+}
+
+.btn-secondary {
+  --btn-theme-color: var(--secondary-color);
+  --btn-contrast-color: var(--secondary-contrast-color);
+}
+
+
+/* LIST */
+.btn-list {
+  --list-gap: 0.5rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--list-gap);
+  /* ? maybe ? */
+  align-items: start;
+}
+
+/* INPUTS */
+
+/* Text inputs */
+input[type="text"],
+input[type="email"],
+input[type="number"],
+input[type="password"],
+input[type="search"],
+input[type="tel"],
+input[type="url"],
+textarea,
+select {
+  /* display: block; */
+  display: inline-block;
+  /* width: 100%; */
+  padding: 1em 1.5em;
+  font-size: var(--controls-fs, var(--controls-fs-md));
+  line-height: 1.25em;
+  font-weight: 300;
+  color: inherit;
+  appearance: none;
+  background-clip: padding-box;
+  /* TODO: Replace hard-coded with variable */
+  border: 1px solid #ded0b1;
+  border-radius: 6.4px;
+
+  &.sm {
+    font-size: var(--controls-fs-sm);
+  }
+
+  &.lg {
+    font-size: var(--controls-fs-lg);
+  }
+}
+
+.btn-sm, .controls-sm {
+  --controls-fs: var(--controls-fs-sm);
+}
+
+.btn-md, .controls-md {
+  --controls-fs: var(--controls-fs-md);
+}
+
+.btn-lg, .controls-lg {
+  --controls-fs: var(--controls-fs-lg);
+}
+
+/* Width of control (or height for <textarea>) follows its content */
+.autosize {
+  field-sizing: content;
+}

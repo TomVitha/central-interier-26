@@ -4,6 +4,14 @@
     "description": "404 - Stránka neexistuje",
     "blocks": [
       {
+        "type": "meta",
+        "src": "metaaa"
+      },
+      {
+        "type": "content",
+        "src": "header"
+      },
+      {
         "src": "404"
       }
     ]
@@ -18,19 +26,17 @@
       },
       {
         "type": "content",
-        "src": "nav"
+        "src": "header"
       },
       {
         "type": "content",
-        "src": "kontent",
-        "class": "klasa",
-        "id": "ajdy"
+        "src": "kontent"
       }
     ]
   },
-  "about-us": {
-    "title": "About Us",
-    "description": "Learn more about us",
+  "style": {
+    "title": "Style",
+    "description": "",
     "blocks": [
       {
         "type": "meta",
@@ -38,11 +44,25 @@
       },
       {
         "type": "content",
-        "src": "nav"
+        "src": "header"
       },
       {
         "type": "content",
-        "src": "aboot"
+        "src": "style"
+      }
+    ]
+  },
+  "detail": {
+    "title": "Detail stylu",
+    "description": "Detail stylu",
+    "blocks": [
+      {
+        "type": "meta",
+        "src": "metaaa"
+      },
+      {
+        "type": "content",
+        "src": "detail"
       }
     ]
   }

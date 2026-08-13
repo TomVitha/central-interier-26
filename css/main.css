@@ -1,0 +1,135 @@
+@import url('https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,100..900;1,100..900&display=swap');
+
+@import url("/css/_reset.css");
+@import url("/css/_variables.css");
+/* @import url("/css/_grid.css"); */
+/* @import url("/css/_utility.css"); */
+@import url("/css/_WIP-BOOTSTRAP-RELEVANT.css");
+@import url("/css/_typography.css");
+@import url("/css/_controls.css");
+@import url("/css/_components.css");
+
+
+/* TODO import: spacing (margins, paddings), display (d-), width/height, align-items-center */
+
+:root {
+  font-family: "Exo 2";
+  line-height: 1.5;
+}
+
+:focus-visible {
+  outline: 3px solid #56b6ffc0 !important;
+  outline-offset: 0px;
+  /* border: none; */
+  /* border-radius: inherit; */
+}
+
+section {
+  margin-block: 120px;
+
+  @media (width < 992px) {
+    margin-block: 60px;
+  }
+}
+
+/* TEMP PLACE */
+.container-1 {
+  max-width: 1920px;
+  padding-inline: 40px;
+  margin-inline: auto;
+}
+.container-2 {
+  max-width: calc(1416px + 40px * 2);
+  padding-inline: 40px;
+  margin-inline: auto;
+}
+
+@media (width < 992px) {
+  .container-1,
+  .container-2 {
+    padding-inline: 20px;
+  }
+}
+
+/* ! all containers */
+[class*="container"] {
+  /* background-color: violet; */
+  height: 100%;
+}
+
+[hidden][hidden][hidden][hidden][hidden][hidden][hidden][hidden] {
+  display: none !important;
+}
+
+
+
+
+
+
+
+
+
+
+
+/** ============== DEV ============== **/
+.dev-typos {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 24px;
+
+  .dev-typo {
+    grid-template-columns: subgrid;
+  }
+
+  @media (width < 992px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dev-typo {
+  display: grid;
+  grid-column: 1 / -1;
+  background-color: #f7f7f7;
+  padding: 34px 24px;
+  border-radius: 8px;
+  grid-template-columns: 220px 1fr;
+  gap: 20px 40px;
+  align-items: center;
+
+
+  @media (width < 992px) {
+    &.desk {
+      display: none !important;
+    }
+  }
+
+  @media (width >=992px) {
+    &.mob {
+      display: none !important;
+    }
+  }
+
+  > div:nth-child(1) {
+    strong {
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: #191919;
+    }
+
+    .dev-note {
+      color: #7b7b7b;
+      font-size: 0.75rem;
+    }
+  }
+
+  > div:nth-child(2) > * {
+    /* backdrop-filter: brightness(97%); */
+    outline: 1px solid #dedede;
+    color: black;
+    display: block;
+
+    strong {
+      display: block;
+    }
+  }
+}

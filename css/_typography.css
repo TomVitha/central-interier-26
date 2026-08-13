@@ -1,0 +1,133 @@
+/* ? maybe ? */
+p {
+  /* text-wrap: pretty; */
+  margin-bottom: 1rem;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+}
+
+/* Emphasis */
+em, .em {
+  font-style: normal;
+  font-size: 1.5em;
+
+  @media (width < 992px) {
+      font-size: 1.125em;
+  }
+}
+
+/* Bold */
+strong {
+  font-weight: 700;
+}
+
+/* Small */
+small {
+  font-size: 0.875em
+}
+
+/* ? maybe ? */
+/* Big */
+b {
+
+}
+
+
+h1, h2, h3, h4, h5, h6 {
+  /* --heading-color: currentColor; */
+  display: block;
+  font-weight: 300;
+  color: var(--heading-color, currentColor);
+  line-height: 1.2;
+  position: relative;
+  
+  /* ? maybe */
+  margin-bottom: 1rem;
+  /* margin-bottom: 2rem; */
+  /* margin-bottom: 1.625rem; */
+  /* margin-bottom: 2.5rem; */
+
+  strong {
+    font-weight: 700;
+  }
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child:not(:only-child) {
+    margin-bottom: 0;
+  }
+}
+
+h1 {
+  font-size: 3.75rem;
+}
+
+h2 {
+  font-size: 2.5rem;
+}
+
+h3 {
+  font-size: 2.25rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+@media (width < 992px) {
+  h1 {
+    font-size: 2.5rem;
+  }
+  h2 {
+    font-size: 1.625rem;
+  }
+  h3 {
+    font-size: 1.5rem;
+  }
+}
+
+.display-1,
+.display-2,
+.display-3,
+.display-4,
+.display-5,
+.display-6 {
+  display: block;
+  color: var(--heading-color, currentColor);
+  position: relative;
+  /* line-height: 1.2; */
+
+  &:first-child {
+    margin-top: 0;
+  }
+
+  &:last-child:not(:only-child) {
+    margin-bottom: 0;
+  }
+}
+
+.display-1 {
+  font-size: 3.75rem;
+  line-height: 1.2;
+  font-weight: 800;
+
+  strong {
+    font-weight: 900;
+  }
+}
+
+.display-2 {
+  font-size: 2.5rem;
+  font-weight: 400;
+  line-height: 1.0;
+}
+
+.display-3 {
+  font-size: 3.75rem;
+  font-weight: 300;
+  line-height: 1.0;
+}

@@ -1,0 +1,36 @@
+:root {
+
+  /* FIGMA */
+  --gold: #ac8b3d;
+  --gold-light: #d4af37;
+  --light-gold: #dfd4a5;
+  --light-gold-bg: #f8f6f2;
+  --black-text: #111827;
+  --grey-2: #c3c3c3;
+  --grey-text: #808387;
+  --border-ikony: #e8e0d0;
+  --footer-bg: #f2ede4;
+
+  /* --body-color: #1f2937; */
+  --body-color: red;
+  /* ? maybe ? */
+  --bs-page-padding: 15px;
+
+  --primary-color: var(--gold);
+  --primary-contrast-color: white;
+  --primary-color-lt: var(--light-gold-bg);
+  --secondary-color: var(--black-text);
+  --secondary-contrast-color: white;
+  /* --secondary-color-lt: ; */
+  --muted-color: var(--grey-text);
+  /* TODO emphasis color */
+  scrollbar-color: var(--primary-color) transparent;
+
+  --controls-fs-sm: 0.75rem;
+  --controls-fs-md: 1rem;
+  --controls-fs-lg: 1.125rem;
+
+
+
+
+}
