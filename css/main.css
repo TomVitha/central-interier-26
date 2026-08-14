@@ -24,11 +24,17 @@
   /* border-radius: inherit; */
 }
 
-section {
+:is(section, .section) {
   margin-block: 120px;
 
   @media (width < 992px) {
     margin-block: 60px;
+  }
+
+  /* sub-section (section inside another section) */
+  & & {
+    /* debug */
+    background-color: red;
   }
 }
 

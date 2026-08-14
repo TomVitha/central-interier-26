@@ -8,11 +8,13 @@
         "src": "metaaa"
       },
       {
-        "type": "content",
         "src": "header"
       },
       {
         "src": "404"
+      },
+      {
+        "src": "footer"
       }
     ]
   },
@@ -25,12 +27,13 @@
         "src": "metaaa"
       },
       {
-        "type": "content",
         "src": "header"
       },
       {
-        "type": "content",
         "src": "kontent"
+      },
+      {
+        "src": "footer"
       }
     ]
   },
@@ -43,12 +46,13 @@
         "src": "metaaa"
       },
       {
-        "type": "content",
         "src": "header"
       },
       {
-        "type": "content",
         "src": "style"
+      },
+      {
+        "src": "footer"
       }
     ]
   },
@@ -61,8 +65,13 @@
         "src": "metaaa"
       },
       {
-        "type": "content",
+        "src": "header"
+      },
+      {
         "src": "detail"
+      },
+      {
+        "src": "footer"
       }
     ]
   }

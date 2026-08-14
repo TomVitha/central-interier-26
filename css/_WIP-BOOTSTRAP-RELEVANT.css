@@ -186,7 +186,8 @@
 /* MARK: GRID */
 .row {
   --tblr-gutter-x: var(--tblr-page-padding);
-  --tblr-gutter-y: 0;
+  /* --tblr-gutter-y: 0; */
+  --tblr-gutter-y: var(--tblr-page-padding);
   display: flex;
   flex-wrap: wrap;
   margin-top: calc(-1 * var(--tblr-gutter-y));
@@ -7248,11 +7249,11 @@
   --tblr-page-padding: var(--tblr-spacer-3);
   --tblr-page-padding-y: var(--tblr-spacer-4);
 }
+
+/* ? maybe ? */
 @media (max-width: 991.98px) {
-  :root,
-  :host,
-  [data-bs-theme=light] {
-    --tblr-page-padding: var(--tblr-spacer-2);
+  :root {
+    /* --tblr-page-padding: var(--tblr-spacer-2); */
   }
 }
 
@@ -7638,6 +7639,26 @@
 .row-lg > [class*=col-] {
   padding-right: 3rem;
   padding-left: 3rem;
+}
+
+.row-deck > .col,
+.row-deck > [class*=col-] {
+  /* display: flex; */
+  /* align-items: stretch; */
+}
+.row-deck > .col > *,
+.row-deck > [class*=col-] > * {
+  /* ? user !important, to ensure the stretch ? */
+  /* flex: 1 1 auto; */
+}
+
+/* DIY row-deck */
+.row-deck {
+  align-items: stretch;
+
+  > :is(.col, [class*=col-]) > * {
+    height: 100%;
+  }
 }
 
 
