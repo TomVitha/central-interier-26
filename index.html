@@ -57,9 +57,9 @@
   <!-- TODO: Font Awesome Styles -->
   <script type="module">
     import { loadContent } from './wms/vite-wms.js';
-    import { initRouter } from './wms/hash-router.js'
+    import { router } from './wms/router.js'
 
-    initRouter();
+    router.init();
 
     // ? should we await ?
     // loadContent("header.head", "./wms/header.html", true)
