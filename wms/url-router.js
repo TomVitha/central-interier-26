@@ -1,5 +1,6 @@
 // URL ROUTER (Vue-Router-like: createRouter({ routes }) -> { push, replace, init })
 import { blockTypes } from "./block-types.js";
+import { getBlockHtml, onBlocksHotUpdate } from "./block-loader.js";
 
 function normalizePath(pathname) {
   if (pathname.length > 1 && pathname.endsWith('/')) return pathname.slice(0, -1)
@@ -32,32 +33,14 @@ export function createRouter(options) {
     return route
   }
 
-  async function createBlock(block) {
+  function createBlock(block) {
 
     // Assume type "content" if not specified
     const blockType = blockTypesByName.get(block.type || "content")
     const blockEl = document.createElement(blockType.element)
-    const filepath = `./blocks/${block.src}.html`
-    let fetchedBlockHtml
 
-    // Load inner HTML from external file given provided filename
-    try {
-      const response = await fetch(filepath);
-      if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-      fetchedBlockHtml = await response.text();
-    }
-    catch (error) {
-      console.error("Failed to load content:", error);
-    }
-
-    // If the provided path doesn't lead to an existing file, fetch returns the content of the current file
-    // Check if the server returned the main index.html instead of the requested partial
-    if (fetchedBlockHtml.includes("<!DOCTYPE html>")) {
-      throw new Error(`File not found (Server returned full page): ${filepath}`);
-    }
-
-    // Inner content
-    blockEl.innerHTML = fetchedBlockHtml;
+    // Inner content (imported through Vite, see block-loader.js)
+    blockEl.innerHTML = getBlockHtml(block.src)
 
     // Attributes
     blockEl.setAttribute(blockType.vDataAttr, "")
@@ -67,23 +50,18 @@ export function createRouter(options) {
     return blockEl.outerHTML
   }
 
-  async function createPathBlocks(route) {
-
-    let blocks = []
-    for (const block of route.blocks) {
-      blocks.push(await createBlock(block))
-    }
-    return blocks
+  function createPathBlocks(route) {
+    return route.blocks.map(block => createBlock(block))
   }
 
-  async function render(route) {
+  async function render(route, { scroll = true } = {}) {
 
     const blocksContainer = document.querySelector("#wms-blocks")
 
     document.title = `${titlePrefix}${route.title}${titleSuffix}`
     document.querySelector('meta[name="description"]')?.setAttribute("content", route.description);
 
-    const blocks = await createPathBlocks(route)
+    const blocks = createPathBlocks(route)
     blocksContainer.replaceChildren(document.createRange().createContextualFragment(blocks.join("\n")))   // Fragment allows executing scripts inside loaded HTML (dangerous for prod, fine for local dev)
 
     // Active link class
@@ -97,12 +75,14 @@ export function createRouter(options) {
       });
     }
 
-    // Jump to the top of the page
-    window.scrollTo({
-      top: 0,
-      left: 0,
-      behavior: "instant"
-    })
+    // Jump to the top of the page (skipped when re-rendering in place after a hot update)
+    if (scroll) {
+      window.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "instant"
+      })
+    }
   }
 
   async function goTo(path, { push = true } = {}) {
@@ -141,6 +121,10 @@ export function createRouter(options) {
   function init() {
     window.addEventListener('popstate', onPopState)
     document.addEventListener('click', onLinkClick)
+
+    // Re-render the current route in place when a block's HTML file is edited (Vite HMR)
+    onBlocksHotUpdate(() => render(resolve(window.location.pathname), { scroll: false }))
+
     return replace(window.location.pathname)
   }
 
