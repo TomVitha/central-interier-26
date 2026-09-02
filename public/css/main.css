@@ -33,38 +33,11 @@
 
   /* sub-section (section inside another section) */
   & & {
-    /* debug */
-    background-color: red;
+    /* ? maybe smaller spacing ? */
   }
 }
 
-/* TEMP PLACE */
-.container-1 {
-  max-width: 1920px;
-  padding-inline: 40px;
-  margin-inline: auto;
-}
-.container-2 {
-  max-width: calc(1416px + 40px * 2);
-  padding-inline: 40px;
-  margin-inline: auto;
-}
-
-@media (width < 992px) {
-  .container-1,
-  .container-2 {
-    padding-inline: 20px;
-  }
-}
-
-/* ! all containers */
-[class*="container"] {
-  /* background-color: violet; */
-  height: 100%;
-}
 
 [hidden][hidden][hidden][hidden][hidden][hidden][hidden][hidden] {
   display: none !important;
 }
-
-

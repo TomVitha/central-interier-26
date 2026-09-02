@@ -1,44 +1,36 @@
 /* ? MOVE INTO _layout.css ?? */
 
-.container,
-.container-fluid,
-.container-xxl,
-.container-xl,
-.container-lg,
-.container-md,
-.container-sm {
-  --bs-gutter-x: calc(var(--bs-page-padding) * 2);
-  --bs-gutter-y: 0;
-  width: 100%;
-  padding-right: calc(var(--bs-gutter-x) * 0.5);
-  padding-left: calc(var(--bs-gutter-x) * 0.5);
-  margin-right: auto;
-  margin-left: auto;
-}
-
-
-/* WIP */
-
-/* !!! ULTRA MEGA GIGA TEMPORARY !!! */
-.container-1,
-.container-2 {
+/* ! all containers */
+[class*="container"] {
   --bs-gutter-x: calc(var(--bs-page-padding) * 2);
   --bs-gutter-y: 0;
   width: 100%;
   /* padding-right: calc(var(--bs-gutter-x) * 0.5); */
   /* padding-left: calc(var(--bs-gutter-x) * 0.5); */
-  padding-right: 40px;
-  padding-left: 40px;
-  margin-right: auto;
-  margin-left: auto;
+  padding-inline: 40px;
+  margin-inline: auto;
+  height: 100%;
+
+  @media (width < 992px) {
+    padding-inline: 20px;
+
+    /* No padding on sides on mobile */
+    &.m-0 {
+      padding-inline: 0 !important;
+    }
+  }
 }
 
-.container-1 {
+.container-main {
   max-width: 1920px;
 }
 
-.container-2 {
+.container-wide {
   max-width: calc(1416px + 40px * 2);
+}
+
+.container-narrow {
+  /* TODO */
 }
 
 .container-sm {
