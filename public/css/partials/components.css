@@ -537,3 +537,104 @@
     margin-left: auto;
   }
 }
+
+/* # CAROUSEL # */
+.carousel {
+  /* ! Name musí být pro každý carousel deklarován unikátní */
+  --carousel-name: ;
+  --carousel-spacing: 1rem;
+  --carousel-padding-x: 0rem;
+  --carousel-padding-y: 0rem;
+  --carousel-height: auto;
+  --carousel-slides-align: normal;
+  --carousel-slides-per-page: auto;
+  --carousel-fade-length: 0px;
+  overflow-x: auto;
+  width: 100%;
+  display: flex;
+  align-items: var(--carousel-slides-align);
+  gap: var(--carousel-spacing);
+  padding: var(--carousel-padding-y) var(--carousel-padding-x);
+  position: relative;
+  anchor-name: var(--carousel-name);
+  scroll-behavior: smooth;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: thin;
+  container-type: scroll-state;
+
+
+  &::scroll-button(left),
+  &::scroll-button(right) {
+    content: "";
+    display: flex;
+    width: 40px;
+    height: 40px;
+    border-radius: 999px;
+    align-items: center;
+    justify-content: center;
+    background-color: #ac8b3d;
+    color: transparent;
+    border: none;
+    outline: 3px solid #ffffff;
+    cursor: pointer;
+    z-index: 1;
+    position: fixed;
+    position-anchor: var(--carousel-name);
+    background-size: 100% 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    mask-size: 100% 100%;
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+
+  &::scroll-button(left) {
+    content: url('data:image/svg+xml,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M22.2329 28.3076C22.5545 28.3076 22.8745 28.1864 23.1201 27.9448C23.6098 27.46 23.6098 26.6726 23.1201 26.1878L17.1821 20.308L23.1201 14.4283C23.6098 13.9435 23.6098 13.1561 23.1201 12.6712C22.6305 12.1864 21.8353 12.1864 21.3457 12.6712L14.5204 19.4295C14.2849 19.6627 14.154 19.9787 14.154 20.308C14.154 20.6374 14.2866 20.9525 14.5204 21.1866L21.3457 27.944C21.5913 28.1856 21.9113 28.3068 22.2329 28.3068V28.3076Z" fill="%23ffffff"/></svg>');
+    position-area: left center;
+    translate: 50% -20px;
+    /* background-image: url('data:image/svg+xml,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="19" fill="transparent" stroke="%23E8E8E8" stroke-width="2"/><path d="M22.2329 28.3076C22.5545 28.3076 22.8745 28.1864 23.1201 27.9448C23.6098 27.46 23.6098 26.6726 23.1201 26.1878L17.1821 20.308L23.1201 14.4283C23.6098 13.9435 23.6098 13.1561 23.1201 12.6712C22.6305 12.1864 21.8353 12.1864 21.3457 12.6712L14.5204 19.4295C14.2849 19.6627 14.154 19.9787 14.154 20.308C14.154 20.6374 14.2866 20.9525 14.5204 21.1866L21.3457 27.944C21.5913 28.1856 21.9113 28.3068 22.2329 28.3068V28.3076Z" fill="%2320234C"/></svg>'); */
+  }
+
+  &::scroll-button(right) {
+    content: url('data:image/svg+xml,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M17.767 28.3076C17.4454 28.3076 17.1255 28.1864 16.8798 27.9448C16.3902 27.46 16.3902 26.6726 16.8798 26.1878L22.8178 20.308L16.8798 14.4283C16.3902 13.9435 16.3902 13.1561 16.8798 12.6712C17.3694 12.1864 18.1646 12.1864 18.6543 12.6712L25.4795 19.4295C25.7151 19.6627 25.8459 19.9787 25.8459 20.308C25.8459 20.6374 25.7134 20.9525 25.4795 21.1866L18.6543 27.944C18.4086 28.1856 18.0887 28.3068 17.767 28.3068V28.3076Z" fill="%23ffffff"/></svg>');
+    position-area: right center;
+    translate: -50% -20px;
+    /* background-image: url('data:image/svg+xml,<svg width="40" height="40" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg"><circle cx="20" cy="20" r="19" transform="matrix(-1 0 0 1 40 0)" fill="transparent" stroke="%23E8E8E8" stroke-width="2"/><path d="M17.767 28.3076C17.4454 28.3076 17.1255 28.1864 16.8798 27.9448C16.3902 27.46 16.3902 26.6726 16.8798 26.1878L22.8178 20.308L16.8798 14.4283C16.3902 13.9435 16.3902 13.1561 16.8798 12.6712C17.3694 12.1864 18.1646 12.1864 18.6543 12.6712L25.4795 19.4295C25.7151 19.6627 25.8459 19.9787 25.8459 20.308C25.8459 20.6374 25.7134 20.9525 25.4795 21.1866L18.6543 27.944C18.4086 28.1856 18.0887 28.3068 17.767 28.3068V28.3076Z" fill="%2320234C"/></svg>'); */
+  }
+
+  &::scroll-button(*):disabled {
+    opacity: 0.5;
+  }
+}
+
+.carousel__slide {
+  flex: 0 0 auto;
+  scroll-snap-align: center;
+  scroll-snap-stop: always;
+  display: flex;
+  justify-content: center;
+  position: relative;
+  height: var(--carousel-height);
+  width: calc((100% - (var(--carousel-slides-per-page) - 1) * var(--carousel-spacing)) / var(--carousel-slides-per-page));
+  max-width: 100%;
+
+  > figure {
+    height: inherit;
+  }
+
+  img {
+    object-fit: cover;
+    max-height: 100%;
+  }
+}
+
+/* CUSTOM CAROUSELS STYLING */
+
+
+.carousel#gallery-carousel {
+  --carousel-name: galerie;
+  --carousel-height: 350px;
+  --carousel-spacing: 25px;
+  padding-bottom: 40px;
+}
+/* * END - CAROUSEL */

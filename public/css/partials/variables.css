@@ -24,7 +24,7 @@
   /* --secondary-color-lt: ; */
   --muted-color: var(--grey-text);
   /* TODO emphasis color */
-  scrollbar-color: var(--primary-color) transparent;
+  scrollbar-color: var(--primary-color) #EBE5D7;
 
   --controls-fs-sm: 0.75rem;
   --controls-fs-md: 1rem;
