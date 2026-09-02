@@ -12,21 +12,15 @@ const routerOptions = {
       title: "Home Page",
       description: "Welcome to the Home Page",
       blocks: [
-        { src: "metaaa", type: "meta" },
+        { src: "meta-common", type: "meta" },
         { src: "header" },
-        { src: "kontent" },
-        { src: "footer" },
-      ],
-    },
-    {
-      path: "/style",
-      name: "style",
-      title: "Style",
-      description: "",
-      blocks: [
-        { src: "metaaa", type: "meta" },
-        { src: "header" },
-        { src: "style" },
+        { src: "hp/hp-hero" },
+        { src: "hp/hp-content" },
+        { src: "usp" },
+        { src: "styly" },
+        { src: "promo-bannery" },
+        { src: "ukazkove-byty" },
+        { src: "showroom-banner" },
         { src: "footer" },
       ],
     },
@@ -36,27 +30,44 @@ const routerOptions = {
       title: "Detail stylu",
       description: "Detail stylu",
       blocks: [
-        { src: "metaaa", type: "meta" },
+        { src: "meta-common", type: "meta" },
         { src: "header" },
-        { src: "detail" },
+        { src: "detail-template/detail-hero" },
+        { src: "detail-template/detail-content" },
+        { src: "usp" },
+        { src: "styly" },
+        { src: "showroom-banner" },
+        { src: "promo-bannery" },
         { src: "footer" },
       ],
     },
+    // 404
     {
       path: "/404",
       name: "404",
       title: "404",
       description: "404 - Stránka neexistuje",
       blocks: [
-        { src: "metaaa", type: "meta" },
+        { src: "meta-common", type: "meta" },
         { src: "header" },
         { src: "404" },
         { src: "footer" },
       ],
     },
+    // DEV
+    {
+      path: "/style",
+      name: "style",
+      title: "Style",
+      description: "",
+      blocks: [
+        { src: "meta-common", type: "meta" },
+        { src: "header" },
+        { src: "dev/style" },
+        { src: "footer" },
+      ],
+    },
   ]
 }
-
-
 
 export const router = createRouter(routerOptions);
