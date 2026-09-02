@@ -7,9 +7,9 @@
       <div class="col">
         <p>
           <em>
-            <strong>Lorem ipsum</strong> dolor sit amet consectetur adipisicing elit. 
-            Voluptates quo ullam autem doloribus labore, nisi eligendi alias numquam 
-            repellendus voluptatem nobis velit quasi reprehenderit ipsum dolorem, 
+            <strong>Lorem ipsum</strong> dolor sit amet consectetur adipisicing elit.
+            Voluptates quo ullam autem doloribus labore, nisi eligendi alias numquam
+            repellendus voluptatem nobis velit quasi reprehenderit ipsum dolorem,
             natus enim beatae in!
           </em>
         </p>
@@ -261,3 +261,68 @@
     </div>
   </div>
 </section>
+
+
+<style>
+  .dev-typos {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    row-gap: 24px;
+
+    .dev-typo {
+      grid-template-columns: subgrid;
+    }
+
+    @media (width < 992px) {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .dev-typo {
+    display: grid;
+    grid-column: 1 / -1;
+    background-color: #f7f7f7;
+    padding: 34px 24px;
+    border-radius: 8px;
+    grid-template-columns: 220px 1fr;
+    gap: 20px 40px;
+    align-items: center;
+
+
+    @media (width < 992px) {
+      &.desk {
+        display: none !important;
+      }
+    }
+
+    @media (width >=992px) {
+      &.mob {
+        display: none !important;
+      }
+    }
+
+    >div:nth-child(1) {
+      strong {
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #191919;
+      }
+
+      .dev-note {
+        color: #7b7b7b;
+        font-size: 0.75rem;
+      }
+    }
+
+    >div:nth-child(2)>* {
+      /* backdrop-filter: brightness(97%); */
+      outline: 1px solid #dedede;
+      color: black;
+      display: block;
+
+      strong {
+        display: block;
+      }
+    }
+  }
+</style>
