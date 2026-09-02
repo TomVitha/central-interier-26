@@ -5,6 +5,7 @@
 /* @import url("./partials/grid.css"); */
 /* @import url("./partials/utility.css"); */
 @import url("./partials/bs-selects.css");
+@import url("./partials/layout.css");
 @import url("./partials/typography.css");
 @import url("./partials/controls.css");
 @import url("./partials/components.css");
@@ -23,20 +24,6 @@
   /* border: none; */
   /* border-radius: inherit; */
 }
-
-:is(section, .section) {
-  margin-block: 120px;
-
-  @media (width < 992px) {
-    margin-block: 60px;
-  }
-
-  /* sub-section (section inside another section) */
-  & & {
-    /* ? maybe smaller spacing ? */
-  }
-}
-
 
 [hidden][hidden][hidden][hidden][hidden][hidden][hidden][hidden] {
   display: none !important;

@@ -1,0 +1,65 @@
+:is(section, .section) {
+  margin-block: 120px;
+
+  @media (width < 992px) {
+    margin-block: 60px;
+  }
+
+  /* sub-section (section inside another section) */
+  & & {
+    /* ? maybe smaller spacing ? */
+  }
+}
+
+/* ! all containers */
+[class*="container"] {
+  --bs-gutter-x: calc(var(--bs-page-padding) * 2);
+  --bs-gutter-y: 0;
+  width: 100%;
+  /* padding-right: calc(var(--bs-gutter-x) * 0.5); */
+  /* padding-left: calc(var(--bs-gutter-x) * 0.5); */
+  padding-inline: 40px;
+  margin-inline: auto;
+  height: 100%;
+
+  @media (width < 992px) {
+    padding-inline: 20px;
+
+    /* No padding on sides on mobile */
+    &.m-0 {
+      padding-inline: 0 !important;
+    }
+  }
+}
+
+.container-main {
+  max-width: 1920px;
+}
+
+.container-wide {
+  max-width: calc(1416px + 40px * 2);
+}
+
+.container-narrow {
+  /* TODO */
+}
+
+.container-sm {
+  max-width: 540px;
+}
+
+.container-md {
+  max-width: 720px;
+}
+
+.container-lg {
+  max-width: 960px;
+}
+
+.container-xl {
+  max-width: 1140px;
+}
+
+.container-xxl {
+  max-width: 1320px;
+}
