@@ -24,10 +24,25 @@ export function createRouter(options) {
   const notFoundRoute = routesByName.get('404')
   const blockTypesByName = new Map(blockTypes.map(blockType => [blockType.name, blockType]))
 
-  function resolve(pathname) {
-    const route = routesByPath.get(normalizePath(pathname))
+  // Routes are defined relative to the app root; the deployment can live under a subpath (e.g. "/CG26" on GitHub Pages)
+  const base = import.meta.env.BASE_URL === '/' ? '' : normalizePath(import.meta.env.BASE_URL)
+
+  function stripBase(pathname) {
+    const path = normalizePath(pathname)
+    if (!base) return path
+    if (path === base) return '/'
+    if (path.startsWith(base + '/')) return path.slice(base.length)
+    return path
+  }
+
+  function addBase(routePath) {
+    return base + routePath
+  }
+
+  function resolve(routePath) {
+    const route = routesByPath.get(normalizePath(routePath))
     if (!route) {
-      console.error(`Router Error: Location "${pathname}" doesn't exist, rendering 404.`)
+      console.error(`Router Error: Location "${routePath}" doesn't exist, rendering 404.`)
       return notFoundRoute
     }
     return route
@@ -62,7 +77,9 @@ export function createRouter(options) {
     document.querySelector('meta[name="description"]')?.setAttribute("content", route.description);
 
     const blocks = createPathBlocks(route)
-    blocksContainer.replaceChildren(document.createRange().createContextualFragment(blocks.join("\n")))   // Fragment allows executing scripts inside loaded HTML (dangerous for prod, fine for local dev)
+    const html = blocks.join("\n")
+
+    blocksContainer.replaceChildren(document.createRange().createContextualFragment(html))   // Fragment allows executing scripts inside loaded HTML (dangerous for prod, fine for local dev)
 
     // Active link class
     if (isActiveLinkClass) {
@@ -86,9 +103,11 @@ export function createRouter(options) {
   }
 
   async function goTo(path, { push = true } = {}) {
-    const route = resolve(path)
+    const routePath = stripBase(path)
+    const route = resolve(routePath)
     await render(route)
-    push ? window.history.pushState(null, null, path) : window.history.replaceState(null, null, path)
+    const fullPath = addBase(normalizePath(routePath))
+    push ? window.history.pushState(null, null, fullPath) : window.history.replaceState(null, null, fullPath)
   }
 
   function push(path) {
@@ -112,7 +131,9 @@ export function createRouter(options) {
     if (!link) return
     if (link.target === '_blank' || link.hasAttribute('download') || link.getAttribute('rel') === 'external') return
     if (link.origin !== window.location.origin) return
-    if (link.pathname === window.location.pathname && link.hash !== '') return   // in-page anchor jump, let the browser handle it
+    // Odkaz v rámci stejné stránky (#kotva) necháme na prohlížeči.
+    // Obě strany porovnáváme včetně base, jinak by se kotva nikdy netrefila.
+    if (link.hash !== '' && normalizePath(link.pathname) === normalizePath(window.location.pathname)) return
 
     event.preventDefault()
     push(link.pathname)
@@ -123,7 +144,7 @@ export function createRouter(options) {
     document.addEventListener('click', onLinkClick)
 
     // Re-render the current route in place when a block's HTML file is edited (Vite HMR)
-    onBlocksHotUpdate(() => render(resolve(window.location.pathname), { scroll: false }))
+    onBlocksHotUpdate(() => render(resolve(stripBase(window.location.pathname)), { scroll: false }))
 
     return replace(window.location.pathname)
   }

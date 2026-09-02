@@ -1,4 +1,4 @@
-import { createRouter } from "./url-router.js";
+import { createRouter } from "./wms/url-router.js";
 
 const routerOptions = {
   // titlePrefix: '',
