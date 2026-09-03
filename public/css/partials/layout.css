@@ -16,8 +16,7 @@
   --bs-gutter-x: calc(var(--bs-page-padding) * 2);
   --bs-gutter-y: 0;
   width: 100%;
-  /* padding-right: calc(var(--bs-gutter-x) * 0.5); */
-  /* padding-left: calc(var(--bs-gutter-x) * 0.5); */
+  /* padding-inline: calc(var(--bs-gutter-x) * 0.5); */
   padding-inline: 40px;
   margin-inline: auto;
   height: 100%;
@@ -25,25 +24,47 @@
   @media (width < 992px) {
     padding-inline: 20px;
 
-    /* No padding on sides on mobile */
+    /* Collapse horizontal padding on mobile */
     &.m0 {
       padding-inline: 0 !important;
     }
   }
 }
 
-.container-main {
-  max-width: 1920px;
+/* Custom containers */
+.container-full {
+  max-width: 100%;
+}
+
+.container-expansive {
+  /* TBD */
+}
+
+.container-broad {
+  /* TBD */
 }
 
 .container-wide {
   max-width: calc(1416px + 40px * 2);
 }
 
-.container-narrow {
-  /* TODO */
+.container-main {
+  max-width: 1920px;
 }
 
+.container-narrow {
+  /* TBD */
+}
+
+.container-tight {
+  /* TBD */
+}
+
+.container-slim {
+  /* TBD */
+}
+
+/* BS containers */
 .container-sm {
   max-width: 540px;
 }
